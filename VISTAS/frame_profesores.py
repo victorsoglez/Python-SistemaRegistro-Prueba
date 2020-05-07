@@ -14,7 +14,7 @@ class VistaProfesor(ttk.Frame):
             self.input_nombre.delete(0, END)
             self.input_telefono.delete(0, END)
             self.input_direccion.delete(0, END)
-
+        
         def insertarDatos():
             query = "insert into profesor values (null, ?, ?, ?)"
             parametros = (self.input_nombre.get(), self.input_telefono.get(), self.input_direccion.get())

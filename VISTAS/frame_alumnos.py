@@ -133,8 +133,10 @@ class VistaAlumnos(ttk.Frame):
             registros = self.tablaDatos.get_children()
             for registro in registros:
                 self.tablaDatos.delete(registro)
-
-            query = "select * from alumno"
+            #Se modifico la query para traernos el nombre de la carrera del alumno
+            #y hacer una consulta en dos tablas 
+            query = "select alumno.codigo_a, alumno.nombre_a, alumno.edad_a, alumno.telefono_a, carrera.nombre_c \
+                    from alumno inner join carrera on alumno.codigo_c1 = carrera.codigo_c"
             conn = Conectar_DB()
             datos = conn.run_db(query)
 
