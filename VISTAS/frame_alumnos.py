@@ -16,7 +16,7 @@ class VistaAlumnos(ttk.Frame):
             self.input_edad.delete(0, END)
             self.input_telefono.delete(0, END)
             self.input_codigoC.delete(0, END)
-
+        #Metodo para insertar datos a BD
         def insertarDatos():
             query = "insert into alumno values (null, ?, ?, ?, ?)"
             parametros = (self.input_nombre.get(), self.input_edad.get(), self.input_telefono.get(),self.input_codigoC.get())
