@@ -10,16 +10,19 @@ class VistaAlumnos(ttk.Frame):
             self.input_nombre.config(state = "normal")
             self.input_edad.config(state = "normal")
             self.input_telefono.config(state = "normal")
-            self.input_codigoC.config(state = "normal")
+            
 
             self.input_nombre.delete(0, END)
             self.input_edad.delete(0, END)
             self.input_telefono.delete(0, END)
-            self.input_codigoC.delete(0, END)
+            
         #Metodo para insertar datos a BD
         def insertarDatos():
+            carrera = self.combo_carreras.get()
+            carrera = carrera[0] + carrera[1]
+
             query = "insert into alumno values (null, ?, ?, ?, ?)"
-            parametros = (self.input_nombre.get(), self.input_edad.get(), self.input_telefono.get(),self.input_codigoC.get())
+            parametros = (self.input_nombre.get(), self.input_edad.get(), self.input_telefono.get(), carrera)
             conn = Conectar_DB()
             conn.run_db(query, parametros)
 
@@ -105,11 +108,25 @@ class VistaAlumnos(ttk.Frame):
         self.input_telefono = Entry(self, state = "readonly")
         self.input_telefono.grid(row = 3, column = 1)
         #Etiqueta codigoCarrer
-        self.codigoCarr_alumno = Label(self, text = "Codigo de Carrera: ")
-        self.codigoCarr_alumno.grid(row = 4, column = 0)
-        #Input codigoCarrera
-        self.input_codigoC = Entry(self, state = "readonly")
-        self.input_codigoC.grid(row = 4, column = 1)
+        self.carreras_disponibles = Label(self, text = "Carreras disponibles: ")
+        self.carreras_disponibles.grid(row = 4, column = 0)
+        #Combo box donde se mostraran las carreras disponibles
+        self.combo_carreras = ttk.Combobox(self)
+        self.combo_carreras.grid(row = 4, column = 1)
+        #Cargar combo con las carreras
+        def cargar_combo():
+            query = "select codigo_c, nombre_c from carrera"
+            conn = Conectar_DB()
+            datos_c = conn.run_db(query)
+            
+            for carrera in datos_c:
+                #Guardamos los valores del combo box en una lista
+                values = list(self.combo_carreras['values'])
+                #A los valores del combo le concatenamos la lista de carreras
+                self.combo_carreras['values'] = values + [(carrera[0], ',' , carrera[1])]
+        #Ejecutamos funcion
+        cargar_combo()
+
         #Botones
         self.btn_nuevo = Button(self, text = "Nuevo Registro", command = nuevoRegistro)
         self.btn_nuevo.grid(row = 5, column = 0)
@@ -122,7 +139,7 @@ class VistaAlumnos(ttk.Frame):
         self.tablaDatos.heading("#1", text = "NOMBRE")
         self.tablaDatos.heading("#2", text = "EDAD")
         self.tablaDatos.heading("#3", text = "TELEFONO")
-        self.tablaDatos.heading("#4", text = "CODIGO DE CARRERA")
+        self.tablaDatos.heading("#4", text = "CARRERA")
 
         self.btn_editar = Button(self, text = "EDITAR", command = editarDatos)
         self.btn_editar.grid(row = 7, column = 0)

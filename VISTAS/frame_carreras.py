@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk
 from conexion_DB.consultas_db import Conectar_DB
 
+
 class VistaCarrera(ttk.Frame):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -23,6 +24,8 @@ class VistaCarrera(ttk.Frame):
             conn.run_db(query, parametros)
 
             ListarDatos()
+            
+
 
         def eliminarDatos():
             codigo_eliminar = self.tabla.item(self.tabla.selection())['text']
