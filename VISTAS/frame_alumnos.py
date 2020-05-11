@@ -2,10 +2,11 @@ from tkinter import ttk
 from tkinter import *
 from conexion_DB.consultas_db import Conectar_DB
 
+
 class VistaAlumnos(ttk.Frame):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
+        
         def nuevoRegistro ():
             self.input_nombre.config(state = "normal")
             self.input_edad.config(state = "normal")
@@ -113,19 +114,31 @@ class VistaAlumnos(ttk.Frame):
         #Combo box donde se mostraran las carreras disponibles
         self.combo_carreras = ttk.Combobox(self)
         self.combo_carreras.grid(row = 4, column = 1)
+       
         #Cargar combo con las carreras
         def cargar_combo():
+            #Borrar valores de combobox
+            self.combo_carreras['values'] = []
+           
             query = "select codigo_c, nombre_c from carrera"
             conn = Conectar_DB()
             datos_c = conn.run_db(query)
-            
+           
             for carrera in datos_c:
                 #Guardamos los valores del combo box en una lista
                 values = list(self.combo_carreras['values'])
+            
                 #A los valores del combo le concatenamos la lista de carreras
                 self.combo_carreras['values'] = values + [(carrera[0], ',' , carrera[1])]
+                
+                
+
         #Ejecutamos funcion
         cargar_combo()
+
+        #Boton actualiza la lista de carreras en combo box en caso de haber nueva carrera.
+        btn_actualizar = Button(self, text = "Actualizar Carreras", command = cargar_combo)
+        btn_actualizar.grid(row = 4, column = 2)
 
         #Botones
         self.btn_nuevo = Button(self, text = "Nuevo Registro", command = nuevoRegistro)
